@@ -484,59 +484,84 @@ strong { font-weight: 500; }
 
 
 /* ─────────────  10. Why Notably  ──────────────────────────
-   Pink background.  Two equal columns; right column ends with
-   a 393-tall photo. */
+   Pink full-bleed.  Top: large square image with a yellow card
+   floating over its top-right corner.  Bottom: two paragraph
+   columns aligned to the right of the section. */
 
 .why {
   display: flex;
+  flex-direction: column;
   padding: var(--s-10) var(--gutter);
-  gap: 80px;
-  background: var(--c-pink);
-  align-items: flex-start;
+  gap: var(--s-8);
+  background: var(--c-pink-deep);
 }
-.why__left {
-  flex: 1;
+.why__cover {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  gap: var(--s-4);
-}
-.why__headline {
-  font-family: var(--font-sans);
-  font-weight: 400;
-  font-size: clamp(40px, 4.8vw, 64px);
-  line-height: 1.06;
-  letter-spacing: -0.02em;
-}
-.why__tagline {
-  font-family: var(--font-serif);
-  font-size: 24px;
-  line-height: 1.2;
-}
-.why__right {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-.why__right p {
-  font-family: var(--font-serif);
-  font-size: 18px;
-  line-height: 1.4;
 }
 .why__image {
-  height: 393px;
+  width: 760px;
+  max-width: 100%;
+  aspect-ratio: 1 / 1;
   border-radius: var(--r-lg);
   background-image: url("assets/why-image.jpg");
   background-size: cover;
   background-position: 50%;
 }
+.why__card {
+  position: absolute;
+  top: 60px;
+  left: 560px;
+  width: 575px;
+  max-width: calc(100% - 80px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-5);
+  padding: var(--s-7) var(--s-7);
+  background: var(--c-yellow);
+  border: 1px solid var(--c-off-black);
+  border-radius: var(--r-lg);
+}
+.why__headline {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: clamp(48px, 6vw, 76px);
+  line-height: 0.96;
+  letter-spacing: -0.02em;
+}
+.why__tagline {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  line-height: 1.2;
+}
+.why__body {
+  display: flex;
+  gap: var(--s-9);
+  margin-left: auto;
+  max-width: 1100px;
+  width: 100%;
+}
+.why__body p {
+  flex: 1;
+  font-family: var(--font-serif);
+  font-size: 18px;
+  line-height: 1.4;
+}
 
 @media (max-width: 1024px) {
-  .why { flex-direction: column; padding: var(--s-10) 40px; gap: var(--s-7); }
+  .why { padding: var(--s-10) 40px; gap: var(--s-7); }
+  .why__cover { flex-direction: column; gap: var(--s-5); }
+  .why__image { width: 100%; aspect-ratio: 4 / 3; }
+  .why__card {
+    position: static;
+    width: 100%;
+    max-width: 100%;
+    padding: var(--s-6);
+  }
+  .why__body { flex-direction: column; gap: var(--s-5); margin-left: 0; }
 }
 @media (max-width: 640px) {
   .why { padding: var(--s-8) 20px; }
-  .why__image { height: 280px; }
 }
 
 
@@ -776,122 +801,128 @@ strong { font-weight: 500; }
 
 
 /* ─────────────  15. Audience / Who It's For  ──────────────
-   Yellow background.  Left: headline + a white outlined quote box.
-   Right: numbered list (01–06). */
+   Yellow background full-bleed.  Top: headline left, caption right.
+   Below: a horizontal scrolling strip of 6 white outlined cards. */
 
 .audience {
-  padding: var(--s-10) var(--gutter);
-  background: var(--c-yellow);
-}
-.audience__inner {
-  display: flex;
-  align-items: flex-start;
-  gap: 80px;
-}
-.audience__left {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--s-8);
+  padding: var(--s-10) 0;
+  background: var(--c-yellow);
+  overflow: hidden;
+}
+.audience__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s-7);
+  padding: 0 var(--gutter);
 }
 .audience__headline {
+  flex: 1;
+  max-width: 780px;
   font-family: var(--font-sans);
   font-weight: 400;
-  font-size: clamp(40px, 4.8vw, 64px);
-  line-height: 1.02;
+  font-size: clamp(40px, 5.4vw, 72px);
+  line-height: 0.96;
   letter-spacing: -0.02em;
 }
-.audience__quote {
-  align-self: center;
-  max-width: 980px;
-  padding: 24px 32px;
-  border: 1px solid var(--c-off-black);
-  border-radius: var(--r-lg);
-  background: var(--c-off-white);
+.audience__caption {
+  flex-shrink: 0;
+  width: 407px;
+  max-width: 100%;
+  padding-bottom: var(--s-3);
   font-family: var(--font-serif);
   font-size: 18px;
-  line-height: 1.4;
+  line-height: 1.2;
 }
-
-.audience__list {
-  flex: 1;
+.audience__strip {
   display: flex;
-  flex-direction: column;
-  padding-top: var(--s-6);
+  flex-wrap: nowrap;
+  gap: var(--s-4);
+  padding: 0 var(--gutter);
+  overflow-x: auto;
+  scrollbar-width: none;
 }
-.audience__list li {
+.audience__strip::-webkit-scrollbar { display: none; }
+.audience__card {
+  flex: 0 0 auto;
+  width: 340px;
+  min-height: 134px;
   display: flex;
   align-items: center;
-  gap: var(--s-4);
-  padding: 18px 0;
-  border-top: 1px solid var(--c-off-black);
+  justify-content: center;
+  padding: var(--s-6);
+  background: var(--c-off-white);
+  border: 1px solid var(--c-off-black);
+  border-radius: var(--r-pill);
+  text-align: center;
   font-family: var(--font-serif);
-  font-size: 18px;
-  line-height: 22px;
-}
-.audience__list li:last-child { border-bottom: 1px solid var(--c-off-black); }
-.audience__num {
-  flex-shrink: 0;
-  width: 32px;
-  font-family: var(--font-sans);
-  font-size: 12px;
-  line-height: 16px;
+  font-size: 22px;
+  line-height: 1.24;
+  letter-spacing: -0.005em;
 }
 
 @media (max-width: 1024px) {
-  .audience { padding: var(--s-10) 40px; }
-  .audience__inner { flex-direction: column; gap: var(--s-7); }
+  .audience { padding: var(--s-10) 0; }
+  .audience__head { flex-direction: column; align-items: flex-start; padding: 0 40px; }
+  .audience__caption { width: 100%; padding-bottom: 0; }
+  .audience__strip { padding: 0 40px; }
 }
 @media (max-width: 640px) {
-  .audience { padding: var(--s-8) 20px; }
-  .audience__quote { padding: var(--s-5); }
+  .audience { padding: var(--s-8) 0; }
+  .audience__head { padding: 0 20px; }
+  .audience__strip { padding: 0 20px; }
+  .audience__card { width: 260px; font-size: 19px; }
 }
 
 
 /* ─────────────  16. POV  ──────────────────────────────────
-   Pink background.  Display headline.  Two-column body under
-   a 1px divider rule. */
+   Off-white background.  A single centered display headline with
+   "Quality" highlighted in mint, followed by a short serif caption. */
 
 .pov {
   display: flex;
   flex-direction: column;
-  padding: var(--s-10) var(--gutter);
+  align-items: center;
+  justify-content: center;
   gap: var(--s-7);
-  background: var(--c-pink-deep);
+  padding: var(--s-12) var(--gutter) var(--s-10);
+  background: var(--c-off-white);
+  text-align: center;
 }
 .pov__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-4);
+  max-width: 1280px;
   font-family: var(--font-sans);
   font-weight: 400;
-  font-size: clamp(56px, 7.5vw, 96px);
-  line-height: 1.04;
+  font-size: clamp(56px, 8vw, 96px);
+  line-height: 1;
   letter-spacing: -0.025em;
 }
+.pov__title .hl {
+  padding: 0 var(--s-5);
+  border-radius: var(--r-pill);
+  line-height: 1;
+}
 .pov__body {
-  display: flex;
-  gap: 80px;
-  padding-top: var(--s-6);
-  border-top: 1px solid rgba(39, 40, 38, 0.25);
-}
-.pov__lead {
-  flex: 1;
+  max-width: 920px;
   font-family: var(--font-serif);
-  font-size: 24px;
-  line-height: 1.4;
-}
-.pov__support {
-  flex: 1;
-  font-family: var(--font-serif);
-  font-size: 15px;
-  line-height: 1.4;
-  opacity: 0.85;
+  font-size: clamp(18px, 1.8vw, 24px);
+  line-height: 1.2;
 }
 
 @media (max-width: 1024px) {
-  .pov { padding: var(--s-10) 40px; }
-  .pov__body { flex-direction: column; gap: var(--s-5); }
+  .pov { padding: var(--s-10) 40px; gap: var(--s-6); }
 }
 @media (max-width: 640px) {
-  .pov { padding: var(--s-8) 20px; }
+  .pov { padding: var(--s-8) 20px; gap: var(--s-5); }
+  .pov__title { gap: var(--s-2); }
 }
 
 
