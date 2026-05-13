@@ -6,6 +6,25 @@
    ════════════════════════════════════════════════════════════════ */
 
 
+/* ─────────────  0. Type — trial fonts  ─────────────────────── */
+
+@font-face {
+  font-family: "Rhetorik Sans Trial";
+  src: url("assets/fonts/RhetorikSans-Regular-Trial.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Rhetorik Serif Trial";
+  src: url("assets/fonts/RhetorikSerif-Regular-Trial.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+
 /* ─────────────  1. Tokens  ─────────────────────────────────── */
 
 :root {
