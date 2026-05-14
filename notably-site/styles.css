@@ -107,10 +107,11 @@ strong { font-weight: 500; }
 .hl--pink   { background: var(--c-pink); }
 .hl--mint   { background: var(--c-mint); }
 
-/* Pill mask-in — used on three headlines on the page:
+/* Pill mask-in — used on four headlines on the page:
    • Hero "Growing" (fires on page load with a 1.25s delay so it lands
      after the staggered word-in)
    • Callout "Right" (fires when the section scrolls into view)
+   • POV "Quality" (fires when the section scrolls into view)
    • Final CTA "Count?" (fires when the section scrolls into view)
 
    In each case the pill background is rendered as a ::before layer
@@ -121,12 +122,14 @@ strong { font-weight: 500; }
    motion see the pill filled instantly. */
 .hero .hl--yellow,
 .callout .hl--pink,
+.pov .hl--mint,
 .final .hl--yellow {
   position: relative;
   background: transparent;
 }
 .hero .hl--yellow::before,
 .callout .hl--pink::before,
+.pov .hl--mint::before,
 .final .hl--yellow::before {
   content: "";
   position: absolute;
@@ -138,6 +141,7 @@ strong { font-weight: 500; }
 }
 .hero .hl--yellow::before  { background: var(--c-yellow); }
 .callout .hl--pink::before { background: var(--c-pink); }
+.pov .hl--mint::before     { background: var(--c-mint); }
 .final .hl--yellow::before { background: var(--c-yellow); }
 
 .hl__text {
@@ -145,12 +149,13 @@ strong { font-weight: 500; }
   z-index: 1;
 }
 
-/* Triggers — hero plays on load with a delay; the other two play
+/* Triggers — hero plays on load with a delay; the other three play
    when their section gets .in-view from the IntersectionObserver. */
 .hero .hl--yellow::before {
   animation: pill-sweep 1.4s cubic-bezier(0.22, 1, 0.36, 1) 1.25s forwards;
 }
 .callout.in-view .hl--pink::before,
+.pov.in-view .hl--mint::before,
 .final.in-view .hl--yellow::before {
   animation: pill-sweep 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
 }
@@ -162,6 +167,7 @@ strong { font-weight: 500; }
 @media (prefers-reduced-motion: reduce) {
   .hero .hl--yellow::before,
   .callout .hl--pink::before,
+  .pov .hl--mint::before,
   .final .hl--yellow::before {
     animation: none;
     transform: scaleX(1);
