@@ -675,21 +675,19 @@ strong { font-weight: 500; }
 
 
 /* ─────────────  11. What You Get / Value  ─────────────────
-   Two columns: left has the headline.  Right is 4 colored
-   cards stacked vertically (no leading number). */
+   Two columns: left has the headline at the top.  Right is 4
+   colored cards stacked vertically. Both columns are h-fit
+   (no cross-axis stretch) so the headline sits at the top of
+   the section, aligned with the top of the first card. */
 
 .value {
   display: flex;
+  align-items: flex-start;
   padding: var(--s-10) var(--gutter);
   gap: var(--s-8);
 }
 .value__head {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: var(--s-4);
-  align-items: flex-start;
-  justify-content: flex-end;
 }
 .value__headline {
   font-family: var(--font-sans);
