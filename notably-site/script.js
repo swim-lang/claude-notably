@@ -61,31 +61,36 @@
     });
   }
 
-  /* ─── Role Grid slide-down reveal ──────────────────────────── */
+  /* ─── Scroll-triggered reveals ─────────────────────────────── */
   //
-  // Each card in [data-role-grid] starts tucked behind the one above
-  // (CSS handles the transform). When the list scrolls 25% into view,
-  // we add .in-view to kick off the staggered slide-down animation.
-  // The observer disconnects after firing so the animation only plays
-  // once.
+  // Two patterns ride the same IntersectionObserver:
+  //   • [data-role-grid] — the Role Grid card cascade (CSS handles the
+  //     per-card slide-down; we just flip .in-view on the list).
+  //   • [data-pill-sweep] — sections that contain a pill that should
+  //     mask in (Callout "Right", Final CTA "Count?"). CSS handles the
+  //     scaleX sweep; we flip .in-view on the section.
+  //
+  // Each element is observed once and unobserved after firing.
 
-  const roleGrid = document.querySelector("[data-role-grid]");
-  if (roleGrid && "IntersectionObserver" in window) {
+  const revealTargets = document.querySelectorAll(
+    "[data-role-grid], [data-pill-sweep]"
+  );
+  if (revealTargets.length && "IntersectionObserver" in window) {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("in-view");
-            observer.disconnect();
+            observer.unobserve(entry.target);
           }
         });
       },
       { threshold: 0.25 }
     );
-    observer.observe(roleGrid);
-  } else if (roleGrid) {
-    // No IntersectionObserver support — just show the cards in place.
-    roleGrid.classList.add("in-view");
+    revealTargets.forEach((el) => observer.observe(el));
+  } else {
+    // No IntersectionObserver support — reveal everything in place.
+    revealTargets.forEach((el) => el.classList.add("in-view"));
   }
 
   /* ─── Smooth-scroll offset for sticky nav ──────────────────── */

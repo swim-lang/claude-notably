@@ -107,38 +107,62 @@ strong { font-weight: 500; }
 .hl--pink   { background: var(--c-pink); }
 .hl--mint   { background: var(--c-mint); }
 
-/* Hero "Growing" — yellow highlight masks in from the left after the
-   words finish reading in, using the same easing as the primary-button
-   hover sweep. The yellow is a ::before layer that paints at z-index
-   -1 inside the element's own stacking context (position: relative +
-   z-index: 0), guaranteeing the text always sits on top of the pill.
-   Users with reduced motion see the pill filled instantly. */
-.hero .hl--yellow {
+/* Pill mask-in — used on three headlines on the page:
+   • Hero "Growing" (fires on page load with a 1.25s delay so it lands
+     after the staggered word-in)
+   • Callout "Right" (fires when the section scrolls into view)
+   • Final CTA "Count?" (fires when the section scrolls into view)
+
+   In each case the pill background is rendered as a ::before layer
+   that scales from scaleX(0) → scaleX(1) on a left-center origin,
+   using the same easing as the primary-button hover sweep. The text
+   is wrapped in a .hl__text span with z-index: 1 so it always paints
+   above the pill regardless of stacking quirks. Users with reduced
+   motion see the pill filled instantly. */
+.hero .hl--yellow,
+.callout .hl--pink,
+.final .hl--yellow {
   position: relative;
   background: transparent;
 }
-.hero .hl--yellow::before {
+.hero .hl--yellow::before,
+.callout .hl--pink::before,
+.final .hl--yellow::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: var(--c-yellow);
   border-radius: inherit;
   transform: scaleX(0);
   transform-origin: left center;
-  animation: hero-highlight-sweep 1.4s cubic-bezier(0.22, 1, 0.36, 1) 1.25s forwards;
 }
-.hero .hl--yellow .hl__text {
+.hero .hl--yellow::before  { background: var(--c-yellow); }
+.callout .hl--pink::before { background: var(--c-pink); }
+.final .hl--yellow::before { background: var(--c-yellow); }
+
+.hl__text {
   position: relative;
   z-index: 1;
 }
 
-@keyframes hero-highlight-sweep {
+/* Triggers — hero plays on load with a delay; the other two play
+   when their section gets .in-view from the IntersectionObserver. */
+.hero .hl--yellow::before {
+  animation: pill-sweep 1.4s cubic-bezier(0.22, 1, 0.36, 1) 1.25s forwards;
+}
+.callout.in-view .hl--pink::before,
+.final.in-view .hl--yellow::before {
+  animation: pill-sweep 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+}
+
+@keyframes pill-sweep {
   to { transform: scaleX(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero .hl--yellow::before {
+  .hero .hl--yellow::before,
+  .callout .hl--pink::before,
+  .final .hl--yellow::before {
     animation: none;
     transform: scaleX(1);
   }
