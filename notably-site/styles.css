@@ -1077,12 +1077,13 @@ strong { font-weight: 500; }
 
 .news {
   display: flex;
-  padding: var(--s-10) var(--gutter);
+  align-items: center;
+  padding: var(--s-9) var(--gutter);
   gap: var(--s-8);
   background: var(--c-mint);
 }
 .news__left {
-  flex: 1;
+  flex: 0 0 528px;
   display: flex;
   flex-direction: column;
   gap: var(--s-4);
@@ -1099,7 +1100,7 @@ strong { font-weight: 500; }
   padding-top: 8px;
   font-family: var(--font-serif);
   font-size: 18px;
-  line-height: 1.4;
+  line-height: 1.2;
 }
 .news__form {
   display: flex;
@@ -1122,38 +1123,126 @@ strong { font-weight: 500; }
 .news__form input[type=email]:focus { outline: 2px solid var(--c-off-black); outline-offset: 2px; }
 .news__status { font-size: 13px; min-height: 1.2em; opacity: 0.75; }
 
-.news__topics {
-  flex: 1;
+/* Inbox mockup — Mac-style window with chrome bar, toolbar, 4 rows */
+.inbox {
+  flex: 0 0 688px;
   display: flex;
   flex-direction: column;
+  border: 1px solid var(--c-off-black);
+  border-radius: 14px;
+  background: var(--c-off-white);
+  overflow: hidden;
+  box-shadow: 12px 14px 0 0 rgba(39, 40, 38, 0.08);
 }
-.news__topics li {
+.inbox__chrome {
   display: flex;
-  align-items: baseline;
-  gap: var(--s-4);
-  padding: var(--s-4) 0;
-  border-top: 1px solid var(--c-off-black);
+  align-items: center;
+  gap: 6px;
+  padding: 14px 18px;
+  background: #F1EFE6;
+  border-bottom: 1px solid var(--c-off-black);
 }
-.news__topics li:last-child { border-bottom: 1px solid var(--c-off-black); }
-.news__topic-num {
-  flex-shrink: 0;
-  width: 24px;
+.inbox__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  display: inline-block;
+}
+.inbox__dot--red    { background: #E96B6B; }
+.inbox__dot--yellow { background: #F2C94C; }
+.inbox__dot--green  { background: #6BCB77; }
+.inbox__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(39, 40, 38, 0.15);
+}
+.inbox__label {
   font-family: var(--font-sans);
   font-size: 12px;
   line-height: 16px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
-.news__topic-text {
+.inbox__badge {
+  padding: 2px 8px;
+  background: var(--c-pink-deep);
+  border-radius: 999px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  line-height: 16px;
+}
+.inbox__sort {
+  margin-left: auto;
   font-family: var(--font-serif);
-  font-size: 17px;
-  line-height: 1.5;
+  font-size: 12px;
+  line-height: 16px;
+  color: rgba(39, 40, 38, 0.5);
+}
+.inbox__list { display: flex; flex-direction: column; }
+.inbox__row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  border-bottom: 1px solid rgba(39, 40, 38, 0.12);
+}
+.inbox__row:last-child { border-bottom: none; }
+.inbox__unread {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--c-pink-deep);
+}
+.inbox__avatar {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--c-pink-deep);
+  font-family: var(--font-serif);
+  font-size: 15px;
+  line-height: 1;
+  color: var(--c-off-black);
+}
+.inbox__avatar-dot { font-style: italic; }
+.inbox__sender {
+  flex: 0 0 96px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 18px;
+}
+.inbox__subject {
+  flex: 1 1 auto;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 22px;
+}
+.inbox__time {
+  flex-shrink: 0;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 16px;
+  color: rgba(39, 40, 38, 0.55);
 }
 
 @media (max-width: 1024px) {
-  .news { flex-direction: column; padding: var(--s-10) 40px; gap: var(--s-7); }
+  .news { flex-direction: column; align-items: stretch; padding: var(--s-9) 40px; gap: var(--s-7); }
+  .news__left, .inbox { flex: 1 1 auto; }
+  .inbox { max-width: 100%; }
 }
 @media (max-width: 640px) {
   .news { padding: var(--s-8) 20px; }
   .news__form { flex-direction: column; }
+  .inbox__sender { flex-basis: auto; display: none; }
+  .inbox__row { gap: 12px; padding: 14px 16px; }
+  .inbox__avatar { width: 32px; height: 32px; font-size: 13px; }
+  .inbox__subject { font-size: 14px; line-height: 20px; }
 }
 
 
