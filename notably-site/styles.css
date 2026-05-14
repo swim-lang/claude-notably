@@ -1004,10 +1004,9 @@ strong { font-weight: 500; }
   gap: var(--card-g);
   width: max-content;
   padding-left: var(--card-g);
-  animation: audience-ticker 50s linear infinite;
+  animation: audience-ticker 33s linear infinite;
   will-change: transform;
 }
-.audience__strip:hover { animation-play-state: paused; }
 
 .audience__card {
   flex: 0 0 auto;
