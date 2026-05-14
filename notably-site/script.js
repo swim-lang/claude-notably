@@ -107,35 +107,41 @@
 
   /* ─── Intro pink highlight: scroll-linked growth ──────────── */
   //
-  // The pink band behind the Intro divider line grows from left to
-  // right as the user scrolls past the section. Progress 0 = the
-  // section's top edge has just reached the bottom of the viewport;
-  // progress 1 = the section's bottom edge has just left the top.
-  // The value is written to --intro-progress; CSS scales the
-  // ::before via transform: scaleX(var(--intro-progress)).
+  // The pink band behind the Intro divider grows in lockstep with
+  // the highlighter's own viewport position:
+  //   progress 0 = the highlighter just enters at the viewport bottom
+  //   progress 1 = the highlighter is about to leave at the viewport top
+  // Total scroll range over which it animates = viewport height +
+  // highlighter height (the full pass).
   //
-  // We only run the scroll math while the section is anywhere near
-  // the viewport (gated by IntersectionObserver with a wide margin),
-  // and throttle with requestAnimationFrame so updates stay frame-rate
-  // aligned.
+  // The highlighter is rendered as a ::before on .intro__body offset
+  // from its top by (24px label * 1.55 line-height + 10px col gap −
+  // 7px margin) ≈ 40.2px. We measure intro__body's rect and offset
+  // by that constant to get the highlighter's effective top.
 
-  const intro = document.querySelector(".intro");
+  const introBody = document.querySelector(".intro__body");
   const prefersReducedMotion = window.matchMedia?.(
     "(prefers-reduced-motion: reduce)"
   ).matches;
 
-  if (intro && !prefersReducedMotion) {
+  if (introBody && !prefersReducedMotion) {
+    const HIGHLIGHT_OFFSET = 24 * 1.55 + 10 - 7; // ≈ 40.2 px
+    const HIGHLIGHT_HEIGHT = 14;
     let ticking = false;
 
     const update = () => {
-      const rect = intro.getBoundingClientRect();
+      const rect = introBody.getBoundingClientRect();
       const vh = window.innerHeight;
-      // visiblePct = how much of the section has scrolled past the
-      // viewport bottom (0 = top edge at viewport bottom; 1 = section
-      // height fully entered). Map 0.3 → 0 and 0.9 → 1, clamp.
-      const visiblePct = (vh - rect.top) / rect.height;
-      const progress = Math.max(0, Math.min(1, (visiblePct - 0.3) / 0.6));
-      intro.style.setProperty("--intro-progress", progress.toFixed(4));
+      // Highlighter's top edge relative to viewport top.
+      const highlightTop = rect.top + HIGHLIGHT_OFFSET;
+      // Progress 0 when highlightTop == vh (just entering at bottom).
+      // Progress 1 when highlightTop + height == 0 (just exiting at top).
+      // Scroll range = vh + HIGHLIGHT_HEIGHT.
+      const progress = Math.max(
+        0,
+        Math.min(1, (vh - highlightTop) / (vh + HIGHLIGHT_HEIGHT))
+      );
+      introBody.style.setProperty("--intro-progress", progress.toFixed(4));
       ticking = false;
     };
 
@@ -165,7 +171,7 @@
         },
         { rootMargin: "200px 0px" }
       );
-      watcher.observe(intro);
+      watcher.observe(introBody);
     } else {
       window.addEventListener("scroll", onScroll, { passive: true });
     }
