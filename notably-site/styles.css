@@ -115,19 +115,22 @@ strong { font-weight: 500; }
    Users with reduced motion see the pill filled instantly. */
 .hero .hl--yellow {
   position: relative;
-  z-index: 0;
   background: transparent;
 }
 .hero .hl--yellow::before {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
   background: var(--c-yellow);
   border-radius: inherit;
   transform: scaleX(0);
   transform-origin: left center;
   animation: hero-highlight-sweep 1.4s cubic-bezier(0.22, 1, 0.36, 1) 2.7s forwards;
+}
+.hero .hl--yellow .hl__text {
+  position: relative;
+  z-index: 1;
 }
 
 @keyframes hero-highlight-sweep {
