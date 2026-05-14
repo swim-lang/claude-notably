@@ -550,11 +550,14 @@ strong { font-weight: 500; }
 
 /* Slide-down reveal — each card starts tucked behind the one above
    (translateY = -(own height + 16px gap)) with descending z-index so
-   the upper card visually masks it. When .role-list gets .in-view
-   from IntersectionObserver, each card animates down to its row,
-   staggered 100ms apart via the --i index. */
+   the upper card visually masks it. visibility: hidden keeps every
+   card invisible until its animation starts; the keyframes flip it
+   to visible at frame 0 so the card pops into view at row N-1 (right
+   behind the card above) and then slides down to row N. Staggered
+   100ms apart via the --i index. */
 .js .role-list[data-role-grid] .role {
   transform: translateY(calc(-100% - 16px));
+  visibility: hidden;
   will-change: transform;
 }
 .js .role-list[data-role-grid].in-view .role {
@@ -563,7 +566,14 @@ strong { font-weight: 500; }
 }
 
 @keyframes role-slide-down {
-  to { transform: translateY(0); }
+  from {
+    visibility: visible;
+    transform: translateY(calc(-100% - 16px));
+  }
+  to {
+    visibility: visible;
+    transform: translateY(0);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
