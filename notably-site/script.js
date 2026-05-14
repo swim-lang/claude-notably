@@ -63,34 +63,46 @@
 
   /* ─── Scroll-triggered reveals ─────────────────────────────── */
   //
-  // Two patterns ride the same IntersectionObserver:
-  //   • [data-role-grid] — the Role Grid card cascade (CSS handles the
-  //     per-card slide-down; we just flip .in-view on the list).
-  //   • [data-pill-sweep] — sections that contain a pill that should
-  //     mask in (Callout "Right", Final CTA "Count?"). CSS handles the
-  //     scaleX sweep; we flip .in-view on the section.
+  // Three patterns, two observers:
+  //   • [data-role-grid]  — Role Grid card cascade. 25% threshold.
+  //   • [data-line-sweep] — Process / Services divider cascade. 25%.
+  //   • [data-pill-sweep] — individual highlight pills (Hero "Growing",
+  //                         Callout "Right", POV "Quality", Final CTA
+  //                         "Count?"). Observed on the pill element
+  //                         itself at a 50% threshold so the sweep
+  //                         fires when the pill is half on screen.
   //
   // Each element is observed once and unobserved after firing.
 
-  const revealTargets = document.querySelectorAll(
-    "[data-role-grid], [data-pill-sweep], [data-line-sweep]"
+  const sectionTargets = document.querySelectorAll(
+    "[data-role-grid], [data-line-sweep]"
   );
-  if (revealTargets.length && "IntersectionObserver" in window) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("in-view");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
+  const pillTargets = document.querySelectorAll("[data-pill-sweep]");
+
+  if ("IntersectionObserver" in window) {
+    const fire = (observer) => (entries) =>
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in-view");
+          observer.unobserve(entry.target);
+        }
+      });
+
+    const sectionObs = new IntersectionObserver(
+      (entries) => fire(sectionObs)(entries),
       { threshold: 0.25 }
     );
-    revealTargets.forEach((el) => observer.observe(el));
+    const pillObs = new IntersectionObserver(
+      (entries) => fire(pillObs)(entries),
+      { threshold: 0.5 }
+    );
+
+    sectionTargets.forEach((el) => sectionObs.observe(el));
+    pillTargets.forEach((el) => pillObs.observe(el));
   } else {
     // No IntersectionObserver support — reveal everything in place.
-    revealTargets.forEach((el) => el.classList.add("in-view"));
+    sectionTargets.forEach((el) => el.classList.add("in-view"));
+    pillTargets.forEach((el) => el.classList.add("in-view"));
   }
 
   /* ─── Smooth-scroll offset for sticky nav ──────────────────── */
