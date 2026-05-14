@@ -126,7 +126,7 @@ strong { font-weight: 500; }
   border-radius: inherit;
   transform: scaleX(0);
   transform-origin: left center;
-  animation: hero-highlight-sweep 1.4s cubic-bezier(0.22, 1, 0.36, 1) 2.7s forwards;
+  animation: hero-highlight-sweep 1.4s cubic-bezier(0.22, 1, 0.36, 1) 2s forwards;
 }
 .hero .hl--yellow .hl__text {
   position: relative;
