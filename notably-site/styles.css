@@ -125,7 +125,7 @@ strong { font-weight: 500; }
   border-radius: inherit;
   transform: scaleX(0);
   transform-origin: left center;
-  animation: hero-highlight-sweep .6s cubic-bezier(0.45, 0, 0.2, 1) 1s forwards;
+  animation: hero-highlight-sweep .8s cubic-bezier(0.45, 0, 0.2, 1) 1.4s forwards;
   z-index: -1;
 }
 
@@ -307,15 +307,15 @@ strong { font-weight: 500; }
   justify-content: center;
 }
 
-/* Words fade + rise into place, staggered 100ms apart via --i. Last
-   word lands at 900ms, just before the yellow pill begins its 1s
+/* Words fade + rise into place, staggered 140ms apart via --i. Last
+   word lands at 1260ms, just before the yellow pill begins its 1.4s
    sweep — so the headline reads in, then the highlight lands. */
 .hero__word {
   display: inline-block;
   opacity: 0;
   transform: translateY(20px);
-  animation: hero-word-in .5s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
-  animation-delay: calc(var(--i, 0) * 100ms);
+  animation: hero-word-in .7s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  animation-delay: calc(var(--i, 0) * 140ms);
 }
 
 @keyframes hero-word-in {
