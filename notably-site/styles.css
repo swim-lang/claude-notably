@@ -164,6 +164,57 @@ strong { font-weight: 500; }
   to { transform: scaleX(1); }
 }
 
+/* Line-sweep — when Process or Services scrolls into view, every
+   horizontal divider between rows masks in from the left at once.
+   The static borders are made transparent under JS so they don't
+   double up with the animated bars. */
+.js .process[data-line-sweep] .process__step,
+.js .services[data-line-sweep] .services__item {
+  position: relative;
+  border-top-color: transparent;
+}
+.js .process[data-line-sweep] .process__step:last-child,
+.js .services[data-line-sweep] .services__item:last-of-type {
+  border-bottom-color: transparent;
+}
+.js .process[data-line-sweep] .process__step::before,
+.js .services[data-line-sweep] .services__item::before,
+.js .process[data-line-sweep] .process__step:last-child::after,
+.js .services[data-line-sweep] .services__item:last-of-type::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--c-off-black);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+.js .process[data-line-sweep] .process__step::before,
+.js .services[data-line-sweep] .services__item::before {
+  top: -1px;
+}
+.js .process[data-line-sweep] .process__step:last-child::after,
+.js .services[data-line-sweep] .services__item:last-of-type::after {
+  bottom: -1px;
+}
+.js .process[data-line-sweep].in-view .process__step::before,
+.js .process[data-line-sweep].in-view .process__step:last-child::after,
+.js .services[data-line-sweep].in-view .services__item::before,
+.js .services[data-line-sweep].in-view .services__item:last-of-type::after {
+  animation: pill-sweep 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .process[data-line-sweep] .process__step::before,
+  .js .services[data-line-sweep] .services__item::before,
+  .js .process[data-line-sweep] .process__step:last-child::after,
+  .js .services[data-line-sweep] .services__item:last-of-type::after {
+    animation: none;
+    transform: scaleX(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero .hl--yellow::before,
   .callout .hl--pink::before,

@@ -73,7 +73,7 @@
   // Each element is observed once and unobserved after firing.
 
   const revealTargets = document.querySelectorAll(
-    "[data-role-grid], [data-pill-sweep]"
+    "[data-role-grid], [data-pill-sweep], [data-line-sweep]"
   );
   if (revealTargets.length && "IntersectionObserver" in window) {
     const observer = new IntersectionObserver(
