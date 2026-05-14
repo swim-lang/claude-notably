@@ -130,9 +130,11 @@
     const update = () => {
       const rect = intro.getBoundingClientRect();
       const vh = window.innerHeight;
-      const total = vh + rect.height;
-      const passed = vh - rect.top;
-      const progress = Math.max(0, Math.min(1, passed / total));
+      // visiblePct = how much of the section has scrolled past the
+      // viewport bottom (0 = top edge at viewport bottom; 1 = section
+      // height fully entered). Map 0.3 → 0 and 0.9 → 1, clamp.
+      const visiblePct = (vh - rect.top) / rect.height;
+      const progress = Math.max(0, Math.min(1, (visiblePct - 0.3) / 0.6));
       intro.style.setProperty("--intro-progress", progress.toFixed(4));
       ticking = false;
     };
