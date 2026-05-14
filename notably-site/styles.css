@@ -591,15 +591,17 @@ strong { font-weight: 500; }
 
 
 /* ─────────────  10. Why Notably  ──────────────────────────
-   Pink full-bleed.  Top: large square image with a yellow card
-   floating over its top-right corner.  Bottom: two paragraph
-   columns aligned to the right of the section. */
+   Pink full-bleed.  Top: 760×760 image with a yellow card floating
+   over its top-right area (absolute top 200, left 560, width 575).
+   Bottom: a 900px-wide block of two serif paragraph columns,
+   margin-left: auto so it right-aligns within the 1280 content area.
+   Vertical padding 140 top/bottom; 64px gap between cover and body. */
 
 .why {
   display: flex;
   flex-direction: column;
-  padding: var(--s-10) var(--gutter);
-  gap: var(--s-8);
+  padding: 140px var(--gutter);
+  gap: 64px;
   background: var(--c-pink-deep);
 }
 .why__cover {
@@ -617,14 +619,14 @@ strong { font-weight: 500; }
 }
 .why__card {
   position: absolute;
-  top: 60px;
+  top: 200px;
   left: 560px;
   width: 575px;
   max-width: calc(100% - 80px);
   display: flex;
   flex-direction: column;
-  gap: var(--s-5);
-  padding: var(--s-7) var(--s-7);
+  gap: 24px;
+  padding: 48px 56px;
   background: var(--c-yellow);
   border: 1px solid var(--c-off-black);
   border-radius: var(--r-lg);
@@ -643,16 +645,16 @@ strong { font-weight: 500; }
 }
 .why__body {
   display: flex;
-  gap: var(--s-9);
+  gap: 40px;
   margin-left: auto;
-  max-width: 1100px;
-  width: 100%;
+  width: 900px;
+  max-width: 100%;
 }
 .why__body p {
   flex: 1;
   font-family: var(--font-serif);
   font-size: 18px;
-  line-height: 1.4;
+  line-height: 1.2;
 }
 
 @media (max-width: 1024px) {
@@ -665,7 +667,7 @@ strong { font-weight: 500; }
     max-width: 100%;
     padding: var(--s-6);
   }
-  .why__body { flex-direction: column; gap: var(--s-5); margin-left: 0; }
+  .why__body { flex-direction: column; gap: var(--s-5); margin-left: 0; width: 100%; }
 }
 @media (max-width: 640px) {
   .why { padding: var(--s-8) 20px; }
