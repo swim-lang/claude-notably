@@ -80,20 +80,24 @@
   const pillTargets = document.querySelectorAll("[data-pill-sweep]");
 
   if ("IntersectionObserver" in window) {
-    const fire = (observer) => (entries) =>
-      entries.forEach((entry) => {
+    // Sections (Role Grid, line sweep): fire once, then unobserve.
+    const sectionObs = new IntersectionObserver(
+      (entries) => entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add("in-view");
-          observer.unobserve(entry.target);
+          sectionObs.unobserve(entry.target);
         }
-      });
-
-    const sectionObs = new IntersectionObserver(
-      (entries) => fire(sectionObs)(entries),
+      }),
       { threshold: 0.25 }
     );
+    // Pills: keep observing so we can toggle the class both ways —
+    // adding .in-view when the pill is 50% visible and removing it
+    // when it scrolls back out, which lets the CSS transition reverse
+    // ("un-highlight") on scroll-up.
     const pillObs = new IntersectionObserver(
-      (entries) => fire(pillObs)(entries),
+      (entries) => entries.forEach((entry) => {
+        entry.target.classList.toggle("in-view", entry.isIntersecting);
+      }),
       { threshold: 0.5 }
     );
 
