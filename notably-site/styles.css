@@ -555,18 +555,21 @@ strong { font-weight: 500; }
   line-height: 1.5;
 }
 
+/* Labels live in row 1, bodies in row 2 (matching Paper's All Top /
+   All Bot structure). The single divider line is the top border on
+   the body row; a pink ::before band sits behind it as a highlight,
+   spanning all columns including the gap areas in between. */
 .intro__body {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 80px;
+  grid-template-rows: auto auto;
+  column-gap: 80px;
+  row-gap: 10px;
+  isolation: isolate;
 }
-.intro__col {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
-}
+.intro__col { display: contents; }
 .intro__col-label {
+  grid-row: 1;
   font-family: var(--font-sans);
   font-weight: 400;
   font-size: 24px;
@@ -574,18 +577,40 @@ strong { font-weight: 500; }
   color: var(--c-off-black);
 }
 .intro__col-body {
-  align-self: stretch;
+  grid-row: 2;
   padding-top: 10px;
   border-top: 1px solid var(--c-off-black);
   font-family: var(--font-serif);
   font-size: 18px;
   line-height: 1.2;
 }
+.intro__body::before {
+  content: "";
+  grid-row: 2;
+  grid-column: 1 / -1;
+  height: 14px;
+  margin-top: -7px;
+  background: var(--c-pink);
+  z-index: -1;
+}
 
 @media (max-width: 1024px) {
   .intro { padding: var(--s-10) 40px; gap: var(--s-7); }
   .intro__pull { flex-direction: column; align-items: flex-start; gap: var(--s-4); }
-  .intro__body { grid-template-columns: 1fr; gap: var(--s-6); }
+  /* Collapse to a single column with label-body pairs intact. */
+  .intro__body {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    row-gap: var(--s-6);
+  }
+  .intro__col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .intro__col-label,
+  .intro__col-body { grid-row: auto; }
+  .intro__body::before { display: none; }
 }
 @media (max-width: 640px) {
   .intro { padding: var(--s-8) 20px; }
