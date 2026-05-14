@@ -984,18 +984,34 @@ strong { font-weight: 500; }
   font-size: 18px;
   line-height: 1.2;
 }
+/* The viewport is the visible window: full-width, overflow clipped.
+   The strip inside is a continuous flex row of two identical sets of
+   six cards. We animate the strip left by exactly one set's width
+   (6 cards + 6 inter-card gaps) so when the loop restarts, the start
+   of set 2 sits where set 1 was — a seamless infinite ticker. */
+.audience__viewport {
+  width: 100%;
+  overflow: hidden;
+  /* Promote to its own layer so the animated child doesn't repaint
+     anything outside its bounds. */
+  contain: paint;
+}
 .audience__strip {
+  --card-w: 340px;
+  --card-g: 16px;
   display: flex;
   flex-wrap: nowrap;
-  gap: var(--s-4);
-  padding: 0 var(--gutter);
-  overflow-x: auto;
-  scrollbar-width: none;
+  gap: var(--card-g);
+  width: max-content;
+  padding-left: var(--card-g);
+  animation: audience-ticker 50s linear infinite;
+  will-change: transform;
 }
-.audience__strip::-webkit-scrollbar { display: none; }
+.audience__strip:hover { animation-play-state: paused; }
+
 .audience__card {
   flex: 0 0 auto;
-  width: 340px;
+  width: var(--card-w);
   min-height: 134px;
   display: flex;
   align-items: center;
@@ -1011,17 +1027,25 @@ strong { font-weight: 500; }
   letter-spacing: -0.005em;
 }
 
+@keyframes audience-ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(calc(-6 * (var(--card-w) + var(--card-g)))); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .audience__strip { animation: none; }
+}
+
 @media (max-width: 1024px) {
   .audience { padding: var(--s-10) 0; }
   .audience__head { flex-direction: column; align-items: flex-start; padding: 0 40px; }
   .audience__caption { width: 100%; padding-bottom: 0; }
-  .audience__strip { padding: 0 40px; }
 }
 @media (max-width: 640px) {
   .audience { padding: var(--s-8) 0; }
   .audience__head { padding: 0 20px; }
-  .audience__strip { padding: 0 20px; }
-  .audience__card { width: 260px; font-size: 19px; }
+  .audience__strip { --card-w: 260px; }
+  .audience__card { font-size: 19px; }
 }
 
 
