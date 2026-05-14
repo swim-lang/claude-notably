@@ -307,6 +307,29 @@ strong { font-weight: 500; }
   justify-content: center;
 }
 
+/* Words fade + rise into place, staggered 100ms apart via --i. Last
+   word lands at 900ms, just before the yellow pill begins its 1s
+   sweep — so the headline reads in, then the highlight lands. */
+.hero__word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: hero-word-in .5s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  animation-delay: calc(var(--i, 0) * 100ms);
+}
+
+@keyframes hero-word-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__word {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .hero__subtitle {
   font-family: var(--font-serif);
   font-size: clamp(20px, 2.2vw, 24px);
