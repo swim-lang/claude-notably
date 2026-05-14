@@ -198,11 +198,27 @@ strong { font-weight: 500; }
 .js .services[data-line-sweep] .services__item:last-of-type::after {
   bottom: -1px;
 }
+/* --line-i indexes each row top to bottom so the dividers cascade. */
+.js .process[data-line-sweep] .process__step { --line-i: 0; }
+.js .process[data-line-sweep] .process__step:nth-child(2) { --line-i: 1; }
+.js .process[data-line-sweep] .process__step:nth-child(3) { --line-i: 2; }
+.js .process[data-line-sweep] .process__step:nth-child(4) { --line-i: 3; }
+
+.js .services[data-line-sweep] .services__item { --line-i: 0; }
+.js .services[data-line-sweep] .services__item:nth-of-type(2) { --line-i: 1; }
+.js .services[data-line-sweep] .services__item:nth-of-type(3) { --line-i: 2; }
+.js .services[data-line-sweep] .services__item:nth-of-type(4) { --line-i: 3; }
+.js .services[data-line-sweep] .services__item:nth-of-type(5) { --line-i: 4; }
+
 .js .process[data-line-sweep].in-view .process__step::before,
+.js .services[data-line-sweep].in-view .services__item::before {
+  animation: pill-sweep 2.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(0.3s + var(--line-i, 0) * 150ms);
+}
 .js .process[data-line-sweep].in-view .process__step:last-child::after,
-.js .services[data-line-sweep].in-view .services__item::before,
 .js .services[data-line-sweep].in-view .services__item:last-of-type::after {
-  animation: pill-sweep 2.8s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+  animation: pill-sweep 2.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(0.3s + (var(--line-i, 0) + 1) * 150ms);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -547,7 +563,7 @@ strong { font-weight: 500; }
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
+  gap: 10px;
 }
 .intro__col-label {
   font-family: var(--font-sans);
@@ -557,9 +573,12 @@ strong { font-weight: 500; }
   color: var(--c-off-black);
 }
 .intro__col-body {
+  align-self: stretch;
+  padding-top: 10px;
+  border-top: 1px solid var(--c-off-black);
   font-family: var(--font-serif);
   font-size: 18px;
-  line-height: 1.4;
+  line-height: 1.2;
 }
 
 @media (max-width: 1024px) {
