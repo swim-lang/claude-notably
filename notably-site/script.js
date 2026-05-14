@@ -90,15 +90,24 @@
       }),
       { threshold: 0.25 }
     );
-    // Pills: keep observing so we can toggle the class both ways —
-    // adding .in-view when the pill is 50% visible and removing it
-    // when it scrolls back out, which lets the CSS transition reverse
-    // ("un-highlight") on scroll-up.
+    // Pills: keep observing so the class toggles both ways. The
+    // rootMargin extends the observation root upward to infinity,
+    // so a pill that's already above the viewport (scrolled past)
+    // still counts as "intersecting" — meaning it stays highlighted
+    // when the user scrolls back up and the pill re-enters from the
+    // top. The only moment .in-view changes is when the pill crosses
+    // the 50% visibility line at the BOTTOM of the viewport:
+    //   • Scrolling down past the pill → 50% visible from bottom →
+    //     .in-view added → mask in from left.
+    //   • Scrolling up past the pill → pill drops back below 50% →
+    //     .in-view removed → mask out from right to left.
+    // Top-edge entries/exits are no-ops, so the pill is always
+    // "already behind the letters" when scrolled past going up.
     const pillObs = new IntersectionObserver(
       (entries) => entries.forEach((entry) => {
         entry.target.classList.toggle("in-view", entry.isIntersecting);
       }),
-      { threshold: 0.5 }
+      { rootMargin: "9999px 0px 0px 0px", threshold: 0.5 }
     );
 
     sectionTargets.forEach((el) => sectionObs.observe(el));
