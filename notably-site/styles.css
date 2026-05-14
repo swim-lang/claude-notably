@@ -566,8 +566,8 @@ strong { font-weight: 500; }
   will-change: transform;
 }
 .js .role-list[data-role-grid].in-view .role-row .role {
-  animation: role-slide-down 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  animation-delay: calc(var(--i, 0) * 160ms);
+  animation: role-slide-down 1.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(var(--i, 0) * 240ms);
 }
 
 @keyframes role-slide-down {
