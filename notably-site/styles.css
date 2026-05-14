@@ -592,6 +592,17 @@ strong { font-weight: 500; }
   margin-top: -7px;
   background: var(--c-pink);
   z-index: -1;
+  /* Default (no JS): pink shows at full width. With JS we override
+     via --intro-progress, which the scroll handler updates 0 → 1 as
+     the section passes through the viewport. */
+  transform-origin: left center;
+}
+.js .intro__body::before {
+  transform: scaleX(var(--intro-progress, 0));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .intro__body::before { transform: scaleX(1); }
 }
 
 @media (max-width: 1024px) {

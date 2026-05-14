@@ -105,6 +105,72 @@
     pillTargets.forEach((el) => el.classList.add("in-view"));
   }
 
+  /* ─── Intro pink highlight: scroll-linked growth ──────────── */
+  //
+  // The pink band behind the Intro divider line grows from left to
+  // right as the user scrolls past the section. Progress 0 = the
+  // section's top edge has just reached the bottom of the viewport;
+  // progress 1 = the section's bottom edge has just left the top.
+  // The value is written to --intro-progress; CSS scales the
+  // ::before via transform: scaleX(var(--intro-progress)).
+  //
+  // We only run the scroll math while the section is anywhere near
+  // the viewport (gated by IntersectionObserver with a wide margin),
+  // and throttle with requestAnimationFrame so updates stay frame-rate
+  // aligned.
+
+  const intro = document.querySelector(".intro");
+  const prefersReducedMotion = window.matchMedia?.(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+  if (intro && !prefersReducedMotion) {
+    let ticking = false;
+
+    const update = () => {
+      const rect = intro.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const total = vh + rect.height;
+      const passed = vh - rect.top;
+      const progress = Math.max(0, Math.min(1, passed / total));
+      intro.style.setProperty("--intro-progress", progress.toFixed(4));
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(update);
+        ticking = true;
+      }
+    };
+
+    let scrolling = false;
+    if ("IntersectionObserver" in window) {
+      // Only listen to scroll while the section is anywhere near the
+      // viewport — keeps the scroll handler off the main thread when
+      // the user is elsewhere on the page.
+      const watcher = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !scrolling) {
+              window.addEventListener("scroll", onScroll, { passive: true });
+              scrolling = true;
+            } else if (!entry.isIntersecting && scrolling) {
+              window.removeEventListener("scroll", onScroll);
+              scrolling = false;
+            }
+          });
+        },
+        { rootMargin: "200px 0px" }
+      );
+      watcher.observe(intro);
+    } else {
+      window.addEventListener("scroll", onScroll, { passive: true });
+    }
+
+    update();
+  }
+
   /* ─── Smooth-scroll offset for sticky nav ──────────────────── */
   //
   // Sticky nav covers ~70px. When the user clicks an in-page anchor,
