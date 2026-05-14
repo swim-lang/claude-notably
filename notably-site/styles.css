@@ -107,6 +107,39 @@ strong { font-weight: 500; }
 .hl--pink   { background: var(--c-pink); }
 .hl--mint   { background: var(--c-mint); }
 
+/* Hero "Growing" — yellow highlight masks in from the left ~1s after
+   page load, using the same easing as the primary-button hover sweep.
+   The yellow is rendered as a ::before layer so the text sits on top
+   from frame zero (no FOIC). Users with reduced motion see the pill
+   filled instantly. */
+.hero .hl--yellow {
+  position: relative;
+  background: transparent;
+  isolation: isolate;
+}
+.hero .hl--yellow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--c-yellow);
+  border-radius: inherit;
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: hero-highlight-sweep .6s cubic-bezier(0.45, 0, 0.2, 1) 1s forwards;
+  z-index: -1;
+}
+
+@keyframes hero-highlight-sweep {
+  to { transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero .hl--yellow::before {
+    animation: none;
+    transform: scaleX(1);
+  }
+}
+
 
 /* ─────────────  4. Buttons  ────────────────────────────────
    Primary: filled pink at rest; on hover a deeper pink masks in
