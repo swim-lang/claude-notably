@@ -613,8 +613,9 @@ strong { font-weight: 500; }
 
 
 /* ─────────────  12. Process  ──────────────────────────────
-   Mint background.  Head row is 2 columns (headline + intro).
-   List is full-width: number 120, title flex 1, body flex 1.4. */
+   Mint background.  Head row: H1 left, intro right (baseline-end
+   aligned).  List rows: serif index (120) / sans title (flex 1) /
+   serif body (500 fixed).  Top + bottom rule on the full list. */
 
 .process {
   display: flex;
@@ -649,38 +650,44 @@ strong { font-weight: 500; }
   display: flex;
   align-items: center;
   gap: 48px;
-  padding: var(--s-6) 0;
+  padding: 32px 0;
   border-top: 1px solid var(--c-off-black);
 }
 .process__step:last-child { border-bottom: 1px solid var(--c-off-black); }
 .process__num {
   flex-shrink: 0;
   width: 120px;
-  font-family: var(--font-sans);
-  font-size: clamp(40px, 4.8vw, 64px);
-  line-height: 1;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 30px;
   letter-spacing: -0.02em;
 }
 .process__title {
   flex: 1;
-  font-family: var(--font-serif);
-  font-size: 24px;
-  line-height: 1.33;
-  letter-spacing: -0.005em;
+  font-family: var(--font-sans);
   font-weight: 400;
+  font-size: 36px;
+  line-height: 46px;
+  letter-spacing: -0.005em;
 }
 .process__body {
-  flex: 1.4;
+  flex-shrink: 0;
+  width: 500px;
   font-family: var(--font-serif);
   font-size: 15px;
   line-height: 1.4;
 }
 
+@media (max-width: 1280px) {
+  .process__body { width: 380px; }
+}
 @media (max-width: 1024px) {
   .process { padding: var(--s-10) 40px; gap: var(--s-7); }
   .process__head { flex-direction: column; align-items: flex-start; gap: var(--s-5); }
-  .process__step { flex-direction: column; align-items: flex-start; gap: var(--s-4); }
+  .process__step { flex-direction: column; align-items: flex-start; gap: var(--s-4); padding: var(--s-5) 0; }
   .process__num, .process__title, .process__body { width: auto; flex: none; }
+  .process__title { font-size: 28px; line-height: 1.15; }
 }
 @media (max-width: 640px) {
   .process { padding: var(--s-8) 20px; }
@@ -731,8 +738,9 @@ strong { font-weight: 500; }
 
 
 /* ─────────────  14. Services  ─────────────────────────────
-   Headline at top.  5 list rows: number (140) / title (flex 1)
-   / body (flex 1.4).  Note card pinned full-width at the bottom. */
+   Off-white background.  Headline at top.  5 list rows mirror the
+   Process layout: serif index (120) / sans title (flex 1) / serif
+   body (flex 1.4).  Mint note card pinned full-width at the bottom. */
 
 .services {
   display: flex;
@@ -753,24 +761,25 @@ strong { font-weight: 500; }
   display: flex;
   align-items: center;
   gap: 48px;
-  padding: var(--s-6) 0;
+  padding: 32px 0;
   border-top: 1px solid var(--c-off-black);
 }
 .services__item:last-of-type { border-bottom: 1px solid var(--c-off-black); }
 .services__num {
   flex-shrink: 0;
-  width: 140px;
+  width: 120px;
   padding-top: 6px;
-  font-family: var(--font-sans);
-  font-size: 18px;
-  line-height: 22px;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 30px;
 }
 .services__title {
   flex: 1;
   font-family: var(--font-sans);
   font-weight: 400;
-  font-size: clamp(28px, 3vw, 40px);
-  line-height: 1.15;
+  font-size: 36px;
+  line-height: 46px;
   letter-spacing: -0.01em;
 }
 .services__body {
@@ -792,8 +801,9 @@ strong { font-weight: 500; }
 
 @media (max-width: 1024px) {
   .services { padding: var(--s-10) 40px; gap: var(--s-7); }
-  .services__item { flex-direction: column; align-items: flex-start; gap: var(--s-4); }
+  .services__item { flex-direction: column; align-items: flex-start; gap: var(--s-4); padding: var(--s-5) 0; }
   .services__num, .services__title, .services__body { width: auto; flex: none; padding-top: 0; }
+  .services__title { font-size: 28px; line-height: 1.15; }
 }
 @media (max-width: 640px) {
   .services { padding: var(--s-8) 20px; }
