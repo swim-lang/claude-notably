@@ -600,7 +600,7 @@ strong { font-weight: 500; }
   top: calc(24px * 1.55 + 10px - 7px);
   height: 14px;
   background: var(--c-pink);
-  border-radius: 2px;
+  border-radius: 5px;
   z-index: -1;
   transform-origin: left center;
 }
