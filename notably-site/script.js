@@ -135,11 +135,11 @@
       // Highlighter's top edge relative to viewport top.
       const highlightTop = rect.top + HIGHLIGHT_OFFSET;
       // Progress 0 when highlightTop == vh (just entering at bottom).
-      // Progress 1 when highlightTop == vh / 2 (highlighter has
-      // reached the middle of the viewport). Range = vh / 2.
+      // Progress 1 when highlightTop == vh / 4 (highlighter has
+      // reached the upper quarter of the viewport). Range = 3 * vh / 4.
       const progress = Math.max(
         0,
-        Math.min(1, (vh - highlightTop) / (vh / 2))
+        Math.min(1, (vh - highlightTop) / ((vh * 3) / 4))
       );
       introBody.style.setProperty("--intro-progress", progress.toFixed(4));
       ticking = false;
