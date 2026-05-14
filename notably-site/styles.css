@@ -137,7 +137,10 @@ strong { font-weight: 500; }
   z-index: 0;
   border-radius: inherit;
   transform: scaleX(0);
-  transform-origin: left center;
+  /* Default origin (used on reverse / when .in-view is removed): pink
+     shrinks toward the right edge, so the un-highlight visually wipes
+     from right to left. Forward sweep flips the origin back to left. */
+  transform-origin: right center;
 }
 .hero .hl--yellow::before  { background: var(--c-yellow); }
 .callout .hl--pink::before { background: var(--c-pink); }
@@ -164,12 +167,14 @@ strong { font-weight: 500; }
 }
 .hero .hl--yellow.in-view::before {
   transform: scaleX(1);
+  transform-origin: left center;
   transition-delay: 1.25s;
 }
 .callout .hl--pink.in-view::before,
 .pov .hl--mint.in-view::before,
 .final .hl--yellow.in-view::before {
   transform: scaleX(1);
+  transform-origin: left center;
   transition-delay: 0.3s;
 }
 
