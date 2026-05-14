@@ -202,7 +202,7 @@ strong { font-weight: 500; }
 .js .process[data-line-sweep].in-view .process__step:last-child::after,
 .js .services[data-line-sweep].in-view .services__item::before,
 .js .services[data-line-sweep].in-view .services__item:last-of-type::after {
-  animation: pill-sweep 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+  animation: pill-sweep 2.8s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
 }
 
 @media (prefers-reduced-motion: reduce) {
