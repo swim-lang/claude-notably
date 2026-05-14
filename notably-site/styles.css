@@ -127,7 +127,7 @@ strong { font-weight: 500; }
   border-radius: inherit;
   transform: scaleX(0);
   transform-origin: left center;
-  animation: hero-highlight-sweep 1.1s cubic-bezier(0.45, 0, 0.2, 1) 2s forwards;
+  animation: hero-highlight-sweep 1.4s cubic-bezier(0.22, 1, 0.36, 1) 2.7s forwards;
 }
 
 @keyframes hero-highlight-sweep {
@@ -308,19 +308,23 @@ strong { font-weight: 500; }
   justify-content: center;
 }
 
-/* Words fade + rise into place, staggered 200ms apart via --i. Last
-   word lands at 1800ms, just before the yellow pill begins its 2s
-   sweep — so the headline reads in, then the highlight lands. */
+/* Words fade + rise gently into place, staggered 280ms apart. Longer
+   fade (1.4s) on a softer expo-out curve so words decelerate smoothly
+   into position instead of snapping. Travel reduced from 20px to 12px
+   to soften the visible motion, and translate3d / will-change push the
+   transform onto a compositor layer to kill subpixel text jitter.
+   Last word lands at 2520ms; pill sweep follows at 2700ms. */
 .hero__word {
   display: inline-block;
   opacity: 0;
-  transform: translateY(20px);
-  animation: hero-word-in 1s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
-  animation-delay: calc(var(--i, 0) * 200ms);
+  transform: translate3d(0, 12px, 0);
+  will-change: transform, opacity;
+  animation: hero-word-in 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(var(--i, 0) * 280ms);
 }
 
 @keyframes hero-word-in {
-  to { opacity: 1; transform: translateY(0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
