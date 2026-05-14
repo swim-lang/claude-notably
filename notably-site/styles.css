@@ -524,7 +524,15 @@ strong { font-weight: 500; }
   line-height: 1.4;
 }
 
-.role-list { flex: 1; display: flex; flex-direction: column; gap: var(--s-4); }
+.role-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  /* Clip the first card's pre-animation position so it slides in from
+     above the list rather than floating above the section. */
+  overflow: hidden;
+}
 .role {
   display: flex;
   align-items: flex-start;
@@ -534,10 +542,37 @@ strong { font-weight: 500; }
   font-size: 24px;
   line-height: 30px;
   font-weight: 400;
+  position: relative;
 }
 .role--pink   { background: var(--c-pink); }
 .role--mint   { background: var(--c-mint); }
 .role--yellow { background: var(--c-yellow); }
+
+/* Slide-down reveal — each card starts tucked behind the one above
+   (translateY = -(own height + 16px gap)) with descending z-index so
+   the upper card visually masks it. When .role-list gets .in-view
+   from IntersectionObserver, each card animates down to its row,
+   staggered 100ms apart via the --i index. */
+.js .role-list[data-role-grid] .role {
+  transform: translateY(calc(-100% - 16px));
+  will-change: transform;
+}
+.js .role-list[data-role-grid].in-view .role {
+  animation: role-slide-down .7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(var(--i, 0) * 100ms);
+}
+
+@keyframes role-slide-down {
+  to { transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .role-list[data-role-grid] .role,
+  .js .role-list[data-role-grid].in-view .role {
+    animation: none;
+    transform: none;
+  }
+}
 
 @media (max-width: 1024px) {
   .does { flex-direction: column; padding: var(--s-10) 40px; gap: var(--s-7); }

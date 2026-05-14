@@ -61,6 +61,33 @@
     });
   }
 
+  /* ─── Role Grid slide-down reveal ──────────────────────────── */
+  //
+  // Each card in [data-role-grid] starts tucked behind the one above
+  // (CSS handles the transform). When the list scrolls 25% into view,
+  // we add .in-view to kick off the staggered slide-down animation.
+  // The observer disconnects after firing so the animation only plays
+  // once.
+
+  const roleGrid = document.querySelector("[data-role-grid]");
+  if (roleGrid && "IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+    observer.observe(roleGrid);
+  } else if (roleGrid) {
+    // No IntersectionObserver support — just show the cards in place.
+    roleGrid.classList.add("in-view");
+  }
+
   /* ─── Smooth-scroll offset for sticky nav ──────────────────── */
   //
   // Sticky nav covers ~70px. When the user clicks an in-page anchor,
