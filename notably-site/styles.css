@@ -1685,7 +1685,361 @@ strong { font-weight: 500; }
 }
 
 
-/* ─────────────  22. Reduced motion  ───────────────────────── */
+/* ─────────────  22. Review layer  ─────────────────────────── */
+
+.review-mode-choice {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(39, 40, 38, 0.72);
+  color: var(--c-off-white);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.review-mode-card {
+  display: flex;
+  width: min(100%, 520px);
+  flex-direction: column;
+  gap: 20px;
+  border: 1px solid rgba(251, 250, 245, 0.2);
+  background: rgba(39, 40, 38, 0.96);
+  padding: 36px;
+  box-shadow: 0 24px 80px rgba(39, 40, 38, 0.32);
+}
+
+.review-mode-card span,
+.review-panel-header span,
+.review-panel-meta,
+.review-popover-meta {
+  color: rgba(39, 40, 38, 0.52);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  line-height: 14px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.review-mode-card span {
+  color: rgba(251, 250, 245, 0.56);
+}
+
+.review-mode-card h2 {
+  margin: 0;
+  color: var(--c-off-white);
+  font-family: var(--font-sans);
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1.04;
+}
+
+.review-mode-card p {
+  margin: 0;
+  color: rgba(251, 250, 245, 0.72);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.review-mode-actions,
+.review-popover-actions,
+.review-panel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.review-mode-actions button,
+.review-toolbar button,
+.review-popover button,
+.review-panel button {
+  min-height: 38px;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font-family: var(--font-sans);
+  cursor: pointer;
+}
+
+.review-mode-actions button {
+  min-height: 46px;
+  padding: 0 18px;
+  color: var(--c-off-white);
+}
+
+.review-mode-actions button:first-child {
+  background: var(--c-off-white);
+  color: var(--c-off-black);
+}
+
+.review-toolbar {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid rgba(251, 250, 245, 0.16);
+  background: rgba(39, 40, 38, 0.9);
+  padding: 7px;
+  color: var(--c-off-white);
+  box-shadow: 0 16px 48px rgba(39, 40, 38, 0.24);
+  transform: translateX(-50%);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.review-toolbar button {
+  height: 34px;
+  min-height: 34px;
+  border: 0;
+  padding: 0 12px;
+  color: rgba(251, 250, 245, 0.7);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.review-toolbar button.active,
+.review-toolbar button:hover,
+.review-toolbar button:focus-visible {
+  background: var(--c-off-white);
+  color: var(--c-off-black);
+}
+
+html[data-review-mode="comment"] [data-review-id] {
+  cursor: crosshair;
+}
+
+html[data-review-mode="comment"] [data-review-id]:hover {
+  outline: 2px solid rgba(217, 166, 219, 0.95);
+  outline-offset: 5px;
+}
+
+[data-review-id].has-review-comment {
+  box-shadow: inset 0 0 0 2px rgba(246, 242, 182, 0.9);
+}
+
+[data-review-id].review-jump {
+  outline: 3px solid rgba(217, 166, 219, 0.98) !important;
+  outline-offset: 7px !important;
+}
+
+.review-popover {
+  position: fixed;
+  z-index: 92;
+  display: flex;
+  width: min(360px, calc(100vw - 32px));
+  flex-direction: column;
+  gap: 12px;
+  border: 1px solid rgba(39, 40, 38, 0.14);
+  background: var(--c-off-white);
+  color: var(--c-off-black);
+  padding: 16px;
+  box-shadow: 0 18px 60px rgba(39, 40, 38, 0.26);
+}
+
+.review-popover input,
+.review-popover textarea {
+  width: 100%;
+  border: 1px solid rgba(39, 40, 38, 0.18);
+  background: #fff;
+  color: var(--c-off-black);
+  font: 14px/1.5 var(--font-sans);
+}
+
+.review-popover input {
+  min-height: 40px;
+  padding: 0 10px;
+}
+
+.review-popover textarea {
+  min-height: 118px;
+  resize: vertical;
+  padding: 10px;
+}
+
+.review-popover-actions,
+.review-panel-actions {
+  justify-content: flex-end;
+}
+
+.review-popover button,
+.review-panel button {
+  min-height: 34px;
+  padding: 0 12px;
+  color: var(--c-off-black);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.review-popover button[type="submit"] {
+  background: var(--c-off-black);
+  color: var(--c-off-white);
+}
+
+.review-panel {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  bottom: 72px;
+  z-index: 91;
+  display: flex;
+  width: min(420px, calc(100vw - 36px));
+  flex-direction: column;
+  border: 1px solid rgba(39, 40, 38, 0.14);
+  background: var(--c-off-white);
+  color: var(--c-off-black);
+  box-shadow: 0 18px 70px rgba(39, 40, 38, 0.26);
+}
+
+.review-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid rgba(39, 40, 38, 0.14);
+  padding: 18px;
+}
+
+.review-panel-header h2 {
+  margin: 4px 0 0;
+  font-family: var(--font-sans);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.review-panel-header small,
+.review-panel-item small {
+  display: block;
+  margin-top: 6px;
+  color: rgba(39, 40, 38, 0.54);
+  font-family: var(--font-sans);
+  font-size: 12px;
+}
+
+.review-sync-warning {
+  margin: 0;
+  border-bottom: 1px solid rgba(39, 40, 38, 0.14);
+  padding: 12px 18px;
+  color: rgba(39, 40, 38, 0.68);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.review-panel-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: auto;
+  padding: 14px;
+}
+
+.review-panel-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid rgba(39, 40, 38, 0.14);
+  background: #fff;
+  padding: 14px;
+}
+
+.review-panel-item.is-resolved {
+  opacity: 0.55;
+}
+
+.review-panel-author {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.review-panel-item p {
+  margin: 0;
+  color: var(--c-off-black);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.review-panel-quote {
+  color: rgba(39, 40, 38, 0.58) !important;
+}
+
+.review-panel-empty {
+  margin: 0;
+  color: rgba(39, 40, 38, 0.64);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.review-toast {
+  position: fixed;
+  right: 18px;
+  bottom: 72px;
+  z-index: 96;
+  max-width: min(320px, calc(100vw - 36px));
+  border: 1px solid rgba(251, 250, 245, 0.16);
+  background: var(--c-off-black);
+  color: var(--c-off-white);
+  padding: 12px 14px;
+  box-shadow: 0 14px 44px rgba(39, 40, 38, 0.24);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+@media (max-width: 640px) {
+  .review-mode-card {
+    padding: 26px;
+  }
+
+  .review-mode-card h2 {
+    font-size: 28px;
+  }
+
+  .review-toolbar {
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    transform: none;
+  }
+
+  .review-toolbar button {
+    flex: 1 1 auto;
+  }
+
+  .review-panel {
+    inset: 10px 10px 92px;
+    width: auto;
+  }
+
+  .review-popover {
+    right: 12px !important;
+    left: 12px !important;
+    width: auto;
+  }
+
+  .review-toast {
+    right: 10px;
+    bottom: 104px;
+    left: 10px;
+    max-width: none;
+  }
+}
+
+
+/* ─────────────  23. Reduced motion  ───────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
